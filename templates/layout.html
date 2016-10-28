@@ -1,5 +1,5 @@
 <!doctype html>
-<title>Nixwind Backups</title>
+<title>Backup Manager</title>
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
 <div class=main>
 <div class=page>
@@ -15,5 +15,8 @@
     <div class=flash>{{ message }}</div>
   {% endfor %}
   {% block body %}{% endblock %}
+</div>
+<div class=page>
+<h1> Stats </h1>
 </div>
 </div>
