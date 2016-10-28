@@ -15,8 +15,8 @@ class Awskeys(Base):
 
 class Backdata(Base):
     __tablename__ = 'backdata'
-    slno = Column(Integer, unique=True, nullable=False)
-    serv_name = Column(String(50), primary_key=True)
+    slno = Column(Integer, primary_key=True, nullable=False)
+    serv_name = Column(String(50), unique=True)
     remote_user = Column(String(20), nullable=False)
     remote_port = Column(String(20), nullable=False)
     dir_bkp = Column(String(100), nullable=False)

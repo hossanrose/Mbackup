@@ -18,21 +18,24 @@ def show_entries():
     entries = dbsession.query(Backdata).all()
     return render_template('show_entries.html', entries=entries)
 
-@app.route('/article/<no>')
+@app.route('/server/<no>')
 def show_article(no): 
     entries = dbsession.query(Backdata).filter_by(slno=no)
     return render_template('single_entries.html', entries=entries)
 
-@app.route('/add', methods=['POST'])
+@app.route('/add', methods=['GET','POST'])
 def add_entry():
     if not session.get('logged_in'):
          #abort(401)
          return redirect(url_for('login'))
-    server=Backdata(serv_name=request.form['serv_name'], remote_user=request.form['remote_user'],remote_port=request.form['remote_port'],dir_bkp=request.form['dir_bkp'],bkp_hour=request.form['bkp_hour'],rt_hour=request.form['rt_hour'],bkp_day=request.form['bkp_day'],rt_day=request.form['rt_day'],bkp_week=request.form['bkp_week'],rt_week=request.form['rt_week'],bkp_month=request.form['bkp_month'],rt_month=request.form['rt_month'],aws_profile=request.form['aws_profile'])
-    dbsession.add(server)
-    dbsession.commit()
-    flash('New entry was successfully posted')
-    return redirect(url_for('show_entries'))
+    if request.method == 'GET':
+         return render_template('add_entries.html')
+    else:
+         server=Backdata(serv_name=request.form['serv_name'], remote_user=request.form['remote_user'],remote_port=request.form['remote_port'],dir_bkp=request.form['dir_bkp'],bkp_hour=request.form['bkp_hour'],rt_hour=request.form['rt_hour'],bkp_day=request.form['bkp_day'],rt_day=request.form['rt_day'],bkp_week=request.form['bkp_week'],rt_week=request.form['rt_week'],bkp_month=request.form['bkp_month'],rt_month=request.form['rt_month'],aws_profile=request.form['aws_profile'])
+         dbsession.add(server)
+         dbsession.commit()
+         flash('New entry was successfully posted')
+         return redirect(url_for('show_entries'))
 
 @app.route('/edit/<no>', methods=['GET','POST'])
 def edit_entry(no):
