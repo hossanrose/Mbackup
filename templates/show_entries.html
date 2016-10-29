@@ -1,76 +1,23 @@
 {% extends "layout.html" %}
 {% block body %}
   {% if session.logged_in %}
-    <form action="{{ url_for('add_entry') }}" method=post class=add-entry>
-<table>
-  <tr>
-    <td>Server Name:</td>
-    <td><input type=text size=20 name=serv_name></td>
-  </tr>
-  <tr>
-    <td>AWS profile:</td>
-    <td><input type=text size=20 name=aws_profile></td>
-  </tr>
-  <tr>
-    <td>Remote User:</td>
-    <td><input type=text size=20 name=remote_user></td>
-  </tr>
-  <tr>
-    <td>Remote Port:</td>
-    <td><input type=text size=20 name=remote_port></td>
-  </tr>
-  <tr>
-    <td>Dir to backup:</td>
-    <td><input type=text size=20 name=dir_bkp></td>
-  </tr>
-  <tr>
-    <td>Backup Hour:</td>
-    <td><input type=text size=20 name=bkp_hour></td>
-  </tr>
-  <tr>
-    <td>Retension Hour:</td>
-    <td><input type=text size=20 name=rt_hour></td>
-  </tr>
-  <tr>
-    <td>Backup Day:</td>
-    <td><input type=text size=20 name=bkp_day></td>
-  </tr>
-  <tr>
-    <td>Retension Day:</td>
-    <td><input type=text size=20 name=rt_day></td>
-  </tr>
-  <tr>
-    <td>Backup Week:</td>
-    <td><input type=text size=20 name=bkp_week></td>
-  </tr>
-  <tr>
-    <td>Retension Week:</td>
-    <td><input type=text size=20 name=rt_week></td>
-  </tr>
-  <tr>
-    <td>Backup Month:</td>
-    <td><input type=text  size=20 name=bkp_month></td>
-  </tr>
-  <tr>
-    <td>Retension Month:</td>
-    <td><input type=text  size=20 name=rt_month></td>
-  </tr>
-  <tr>
-     <td></td>
-     <td><input type=submit value=Change></td>
-  </tr>
- </table>
+     <h3>Add Server</h3>
+    <form action="{{ url_for('add_entry') }}">
+     <input type=submit value="Add Server">
     </form>
   {% endif %}
-  <ul class=entries>
+  <h3>Server List </h3>
+  {% if session.logged_in %}
+    <table>
   {% for entry in entries %}
-    <li><h2><a href="{{ url_for('show_article',no=entry.slno) }}">{{ entry.serv_name }}</a>
-    {% if session.logged_in %}
-     <div class=metanav> <a href="{{ url_for('edit_entry',no=entry.slno) }}">edit</a></div>
-    {% endif %}
-     </h2>{{ entry.text|safe }}
+    <tr>
+        <td><b>{{ entry.serv_name }}</b></td>
+	<td><a href="{{ url_for('show_article',no=entry.slno) }}">Details</a>
+        <td><a href="{{ url_for('edit_entry',no=entry.slno) }}">edit</a></td>
+    </tr>
   {% else %}
-    <li><em>Unbelievable.  No entries here so far</em>
+    <em>Unbelievable.  No entries here so far</em>
   {% endfor %}
-  </ul>
+    </table>
+    {% endif %}
 {% endblock %}
