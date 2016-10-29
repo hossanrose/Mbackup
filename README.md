@@ -4,8 +4,8 @@ Backup Manager for local / remote AWS backups
 ##Installation
 
 ### Pre-requisites 
-`virtualenv -p python3 env
-./env/bin/pip3 install -r requirments`
+`virtualenv -p python3 env`
+`./env/bin/pip3 install -r requirments`
 
 ### Configuration
 Configuration conf-sample.py must changed and copied as conf.py
