@@ -6,7 +6,7 @@ Backup Manager for local / remote AWS backups
 ### Pre-requisites 
 `virtualenv -p python3 env`
 
-`./env/bin/pip3 install -r requirments`
+`./env/bin/pip3 install -r requirements.txt`
 
 ### Configuration
 Configuration conf-sample.py must changed and copied as conf.py
@@ -21,7 +21,8 @@ Backend that should be scheduled hourly : Schedule it as below in cron
 
 ##Features
 - Linux local / Remote AWS S3 backups
-- File and Database backups
+- File compression
+- Multiple Database backups
 - Hourly / Daily / Weekly / Monthly Backup scheduling
 - Flexible retension settings
 - WebUI based managment 

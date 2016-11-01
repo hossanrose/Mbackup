@@ -1,14 +1,52 @@
 {% extends "layout.html" %}
 {% block body %}
-  <ul class=entries>
-  {% for entry in entries %}
-    <li><h2><a href="{{ url_for('show_article',no=entry.slno) }}">{{ entry.serv_name }}</a>
+    <h2>{{ entry.serv_name }}</h2>
     {% if session.logged_in %}
      <div class=metanav> <a href="{{ url_for('edit_entry',no=entry.slno) }}">edit</a></div>
+    <h3>Backup status</h3>
+	Hourly:
+	{% if entry.bkp_hour is equalto 0 %} 
+		disabled
+	{% elif entry.bkp_hour is equalto 1 %} 
+		enabled
+	{% elif entry.bkp_hour is equalto 2 %} 
+		alternative
+	{% else %}
+		not a valid option
+	{% endif %}
+	Daily:
+	{% if entry.bkp_day is equalto 0 %} 
+		disabled
+	{% elif entry.bkp_day is equalto 1 %} 
+		enabled
+	{% elif entry.bkp_day is equalto 2 %} 
+		alternative
+	{% else %}
+		not a valid option
+	{% endif %}
+	Weekly:
+	{% if entry.bkp_week is equalto 0 %} 
+		disabled
+	{% elif entry.bkp_week is equalto 1 %} 
+		enabled
+	{% elif entry.bkp_week is equalto 2 %} 
+		alternative
+	{% else %}
+		not a valid option
+	{% endif %}
+	Monthly:
+	{% if entry.bkp_month is equalto 0 %} 
+		disabled
+	{% elif entry.bkp_month is equalto 1 %} 
+		enabled
+	{% elif entry.bkp_month is equalto 2 %} 
+		alternative
+	{% else %}
+		not a valid option
+	{% endif %}
+    <h3>Backup log</h3>
+     {% for line in log %}
+	{{line}}<br> 
+     {% endfor %}
     {% endif %}
-     </h2>{{ entry.text|safe }}
-  {% else %}
-    <li><em>Unbelievable.  No entries here so far</em>
-  {% endfor %}
-  </ul>
 {% endblock %}

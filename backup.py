@@ -5,6 +5,7 @@
 
 from flask import Flask, request, session, redirect, url_for, abort, render_template, flash
 from models import Base, Backdata, dbsession
+from conf import log_location
 
 # create our little application :)
 app = Flask(__name__)
@@ -20,8 +21,9 @@ def show_entries():
 
 @app.route('/server/<no>')
 def show_article(no): 
-    entries = dbsession.query(Backdata).filter_by(slno=no)
-    return render_template('single_entries.html', entries=entries)
+    server = dbsession.query(Backdata).filter_by(slno=no).first()
+    LOG=open(log_location +'/'+server.serv_name +".txt", 'r')
+    return render_template('single_entries.html', entry=server, log=LOG)
 
 @app.route('/add', methods=['GET','POST'])
 def add_entry():
