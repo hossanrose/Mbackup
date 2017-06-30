@@ -60,8 +60,10 @@ BKP_TYPE=`echo $1| cut -d\- -f1`
 RETENTION_HOURS=$2
 echo "Backup description : $BACKUP"
 OLD_BACKUPS=($(find $BACKUPDIR -type f -name "$BACKUPNAME-$BKP_TYPE*" -mmin +$(($RETENTION_HOURS * 60)) -printf "%f\n"))
+echo "Oldbackups to remove" >> $LOG
+echo "$OLD_BACKUPS" >> $LOG
 for old_backup in "${OLD_BACKUPS[@]}"; do
-	if [[ $old_backup =~ $BACKUPNAME-$BKP_TYPE-[0-9]{2}-[0-9]{8}.tar.gz  ]] ; then
+	if [[ $old_backup =~ $BACKUPNAME-$BKP_TYPE-[0-9]{1,2}-[0-9]{8}.tar.gz  ]] ; then
 		echo "Deleting old backup: $old_backup"
 		rm -vf $BACKUPDIR/$old_backup 2>> $LOG
 		if [ ${PIPESTATUS[0]} -ne 0 ]; then
