@@ -1,7 +1,7 @@
-#Mbackup
+# Mbackup
 Backup Manager for local / remote AWS backups
 
-##Installation
+## Installation
 
 ### Pre-requisites 
 `virtualenv -p python3 env`
@@ -19,7 +19,7 @@ Backend that should be scheduled hourly : Schedule it as below in cron
 
 `01 * * * * cd /root/scripts/nixback && ./backup_controller.py >/dev/null 2>&1`
 
-##Features
+#### Features
 - Linux local / Remote AWS S3 backups
 - File compression
 - Multiple Database backups
