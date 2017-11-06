@@ -9,6 +9,7 @@ engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
 
 class Awskeys(Base):
     __tablename__ = 'awskeys'
+    keyno = Column(Integer, primary_key=True, nullable=False)
     aws_profile = Column(String(20), primary_key=True)
     aws_key = Column(String(300), nullable=False)
     aws_secret = Column(String(300), nullable=False)
@@ -44,6 +45,8 @@ class Backdata(Base):
         self.bkp_month=bkp_month
         self.rt_month=rt_month
         self.aws_profile=aws_profile
+        self.aws_key=aws_key
+        self.aws_secret=aws_secret
 
     def __repr__(self):
         return '<Backdata %r>' % self.rt_week

@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block body %}
+    <h2>{{ entry.aws_profile }}</h2>
+    {% if session.logged_in %}
+     <div class=metanav> <a href="{{ url_for('edit_key_entry',no=entry.keyno) }}">edit</a></div>
+    <h3>Backup status</h3>
+	AWS_profile: {{entry.aws_profile }}
+	AWS_key: {{entry.aws_key }}
+	AWS_secret: {{entry.aws_secret }}
+    {% endif %}
+{% endblock %}

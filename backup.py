@@ -4,7 +4,7 @@
 #Purpose: Backup manager
 
 from flask import Flask, request, session, redirect, url_for, abort, render_template, flash
-from models import Base, Backdata, dbsession
+from models import Base, Backdata, Awskeys, dbsession
 from conf import log_location
 
 # create our little application :)
@@ -25,6 +25,12 @@ def show_article(no):
     LOG=open(log_location +'/'+server.serv_name +".txt", 'r')
     return render_template('single_entries.html', entry=server, log=LOG)
 
+@app.route('/key/<no>')
+def show_key_article(no):
+    key = dbsession.query(Awskeys).filter_by(keyno=no).first()
+    return render_template('single_key_entries.html', entry=key)
+
+
 @app.route('/add', methods=['GET','POST'])
 def add_entry():
     if not session.get('logged_in'):
@@ -35,6 +41,20 @@ def add_entry():
     else:
          server=Backdata(serv_name=request.form['serv_name'], remote_user=request.form['remote_user'],remote_port=request.form['remote_port'],dir_bkp=request.form['dir_bkp'],bkp_hour=request.form['bkp_hour'],rt_hour=request.form['rt_hour'],bkp_day=request.form['bkp_day'],rt_day=request.form['rt_day'],bkp_week=request.form['bkp_week'],rt_week=request.form['rt_week'],bkp_month=request.form['bkp_month'],rt_month=request.form['rt_month'],aws_profile=request.form['aws_profile'])
          dbsession.add(server)
+         dbsession.commit()
+         flash('New entry was successfully posted')
+         return redirect(url_for('show_entries'))
+
+@app.route('/addkey', methods=['GET','POST'])
+def add_key_entry():
+    if not session.get('logged_in'):
+         #abort(401)
+         return redirect(url_for('login'))
+    if request.method == 'GET':
+         return render_template('add_key_entries.html')
+    else:
+         key=Awskeys(aws_profile=request.form['aws_profile'], aws_key=request.form['aws_key'],aws_secret=request.form['aws_secret'])
+         dbsession.add(key)
          dbsession.commit()
          flash('New entry was successfully posted')
          return redirect(url_for('show_entries'))
