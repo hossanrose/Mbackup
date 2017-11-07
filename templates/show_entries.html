@@ -9,22 +9,21 @@
   <h3>Key List </h3>
   {% if session.logged_in %}
     <table>
-  {% for entry in entries %}
+  {% for entry in keyentries %}
     <tr>
-        <td><b>{{ entry.serv_name }}</b></td>
-        <td><a href="{{ url_for('show_article',no=entry.slno) }}">Details</a>
-        <td><a href="{{ url_for('edit_entry',no=entry.slno) }}">edit</a></td>
+        <td><b>{{ entry.aws_profile }}</b></td>
+	<td><a href="{{ url_for('show_key_article',awsp=entry.aws_profile ) }}">Details</a>
+        <td><a href="{{ url_for('edit_key_entry',awsp=entry.aws_profile) }}">edit</a></td>
     </tr>
   {% else %}
     <em>Unbelievable.  No entries here so far</em>
   {% endfor %}
-    <h3>Add Server</h3>
+    </table>
+    <h3>Add Key</h3>
     <form action="{{ url_for('add_entry') }}">
      <input type=submit value="Add Server">
     </form>
-  {% endif %}
   <h3>Server List </h3>
-  {% if session.logged_in %}
     <table>
   {% for entry in entries %}
     <tr>

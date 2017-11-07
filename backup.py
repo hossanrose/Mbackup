@@ -17,7 +17,8 @@ def show_entries():
          #abort(401)
          return redirect(url_for('login'))
     entries = dbsession.query(Backdata).all()
-    return render_template('show_entries.html', entries=entries)
+    keyentries = dbsession.query(Awskeys).all()
+    return render_template('show_entries.html', entries=entries , keyentries=keyentries)
 
 @app.route('/server/<no>')
 def show_article(no): 
@@ -25,9 +26,9 @@ def show_article(no):
     LOG=open(log_location +'/'+server.serv_name +".txt", 'r')
     return render_template('single_entries.html', entry=server, log=LOG)
 
-@app.route('/key/<no>')
-def show_key_article(no):
-    key = dbsession.query(Awskeys).filter_by(keyno=no).first()
+@app.route('/key/<awsp>')
+def show_key_article(awsp):
+    key = dbsession.query(Awskeys).filter_by(aws_profile=awsp).first()
     return render_template('single_key_entries.html', entry=key)
 
 
@@ -86,6 +87,25 @@ def edit_entry(no):
          dbsession.commit()
          flash('Edit was successfull')
          return redirect(url_for('show_entries'))
+
+@app.route('/editkey/<awsp>', methods=['GET','POST'])
+def edit_key_entry(awsp):
+    if not session.get('logged_in'):
+         #abort(401)
+         return redirect(url_for('login'))
+    if request.method == 'GET':
+         keyentries = dbsession.query(Awskeys).filter_by(aws_profile=awsp)
+         return render_template('edit_key_entries.html', keyentries=keyentries)
+    else:
+         key=dbsession.query(Awskeys).filter_by(aws_profile=awsp).first()
+         key.aws_profile=request.form['aws_profile']
+         key.aws_key=request.form['aws_key']
+         key.aws_secret=request.form['aws_secret']
+#         db.session.merge(server)
+         dbsession.commit()
+         flash('Edit was successfull')
+         return redirect(url_for('show_entries'))
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
